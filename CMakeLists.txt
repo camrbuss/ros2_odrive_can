@@ -18,7 +18,6 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 # Add msgs/srvs
@@ -31,12 +30,16 @@ include_directories(
   include
 )
 add_library(${PROJECT_NAME}_interface
+  src/can_service.cpp
   src/socketcan_interface.cpp
+)
+ament_target_dependencies(${PROJECT_NAME}_interface
+  rclcpp
 )
 
 
 add_executable(odrive_can src/odrive_can.cpp)
-ament_target_dependencies(odrive_can rclcpp std_msgs)
+ament_target_dependencies(odrive_can rclcpp)
 target_include_directories(odrive_can PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -62,6 +65,9 @@ endif()
 
 # Allows the use of msgs/srvs defined in this package
 rosidl_target_interfaces(odrive_can
+  ${PROJECT_NAME} "rosidl_typesupport_cpp"
+)
+rosidl_target_interfaces(${PROJECT_NAME}_interface
   ${PROJECT_NAME} "rosidl_typesupport_cpp"
 )
 

@@ -14,6 +14,7 @@ class SocketcanInterface
 {
 public:
   SocketcanInterface(canid_t msg_id);
+  ~SocketcanInterface();
   can_frame readFrame();
   int writeFrame(can_frame frame);
 

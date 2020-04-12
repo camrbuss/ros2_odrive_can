@@ -53,7 +53,18 @@
         "thread": "cpp",
         "cfenv": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "csignal": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "set": "cpp",
+        "future": "cpp",
+        "mutex": "cpp",
+        "shared_mutex": "cpp",
+        "typeindex": "cpp",
+        "*.ipp": "cpp"
     },
     "ros.distro": "eloquent",
     "python.autoComplete.extraPaths": [

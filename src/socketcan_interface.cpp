@@ -7,6 +7,12 @@ SocketcanInterface::SocketcanInterface(canid_t msg_id)
     this->openSocket(msg_id);
 }
 
+SocketcanInterface::~SocketcanInterface()
+{
+    // This might not ever be run
+    close(this->s);
+}
+
 int SocketcanInterface::openSocket(canid_t msg_id)
 {
     // Open socket
