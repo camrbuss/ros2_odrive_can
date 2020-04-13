@@ -24,7 +24,7 @@ int SocketcanInterface::openSocket(canid_t msg_id)
 
     can_filter filt;
     filt.can_id = msg_id;
-    filt.can_mask = CAN_SFF_MASK; // Mask to 11 bit identifier
+    filt.can_mask = 0b11111 & CAN_SFF_MASK; // Mask to first 5 bits of 11 bit identifier
     setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filt, sizeof(filt));
 
     addr.can_family = AF_CAN;

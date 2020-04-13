@@ -1,0 +1,5 @@
+uint8 axis
+int32 input_vel
+int32 current_ff
+---
+bool success

@@ -1,0 +1,4 @@
+uint8 axis
+int32 input_current
+---
+bool success

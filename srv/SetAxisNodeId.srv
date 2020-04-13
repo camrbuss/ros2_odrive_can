@@ -1,0 +1,4 @@
+uint8 axis
+uint16 node_id
+---
+bool success

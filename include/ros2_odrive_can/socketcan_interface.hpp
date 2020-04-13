@@ -10,6 +10,8 @@
 #include <sys/socket.h>
 #include <net/if.h>
 
+#include "ros2_odrive_can/odrive_can.hpp"
+
 class SocketcanInterface
 {
 public:

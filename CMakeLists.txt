@@ -21,9 +21,38 @@ find_package(rclcpp REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 # Add msgs/srvs
-rosidl_generate_interfaces(${PROJECT_NAME}
+set(msg_files
   "msg/OdriveStatus.msg"
-  "srv/EncoderEstimates.srv"
+)
+set(srv_files
+  "srv/ClearErrors.srv"
+  "srv/GetEncoderCount.srv"
+  "srv/GetEncoderError.srv"
+  "srv/GetEncoderEstimates.srv"
+  "srv/GetIq.srv"
+  "srv/GetMotorError.srv"
+  "srv/GetSensorlessError.srv"
+  "srv/GetSensorlessEstimates.srv"
+  "srv/GetVbusVoltage.srv"
+  "srv/OdriveEstop.srv"
+  "srv/ResetOdrive.srv"
+  "srv/SetAxisNodeId.srv"
+  "srv/SetAxisRequestedState.srv"
+  "srv/SetAxisStartupConfig.srv"
+  "srv/SetControllerModes.srv"
+  "srv/SetInputCurrent.srv"
+  "srv/SetInputPos.srv"
+  "srv/SetInputVel.srv"
+  "srv/SetTrajAccelLimits.srv"
+  "srv/SetTrajAPerCss.srv"
+  "srv/SetTrajVelLimit.srv"
+  "srv/SetVelLimit.srv"
+  "srv/StartAnticogging.srv"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${srv_files}
+  ${msg_files}
 )
 
 include_directories(

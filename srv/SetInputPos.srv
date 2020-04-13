@@ -1,0 +1,6 @@
+uint8 axis
+int32 input_positions
+int16 vel_ff
+int16 current_ff
+---
+bool success

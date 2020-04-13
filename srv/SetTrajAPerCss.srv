@@ -1,0 +1,4 @@
+uint8 axis
+float32 traj_a_per_css
+---
+bool success

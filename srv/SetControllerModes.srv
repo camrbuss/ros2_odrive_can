@@ -1,0 +1,5 @@
+uint8 axis
+int32 control_mode
+int32 input_mode
+---
+bool success
