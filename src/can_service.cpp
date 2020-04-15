@@ -56,18 +56,24 @@ CanService::~CanService()
 
 void CanService::odrive_estop_callback(const std::shared_ptr<ros2_odrive_can::srv::OdriveEstop::Request> request, std::shared_ptr<ros2_odrive_can::srv::OdriveEstop::Response> response)
 {
+    can_frame send_frame;
+    send_frame.can_dlc = 0;
+    send_frame.can_id = odrive_can::Msg::MSG_ODRIVE_ESTOP;
     if (request->axis == odrive_can::AXIS::AXIS_0)
     {
-        return;
+        send_frame.can_id += odrive_can::AXIS::AXIS_0_ID;
     }
     else if (request->axis == odrive_can::AXIS::AXIS_1)
     {
-        return;
+        send_frame.can_id += odrive_can::AXIS::AXIS_1_ID;
     }
     else
     {
+        response->success = false;
         return;
     }
+    socket_get_vbus_voltage_.writeFrame(send_frame);
+    response->success = true;
 }
 void CanService::get_motor_error_callback(const std::shared_ptr<ros2_odrive_can::srv::GetMotorError::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetMotorError::Response> response)
 {
@@ -179,21 +185,20 @@ void CanService::get_encoder_estimates_callback(const std::shared_ptr<ros2_odriv
     if (request->axis == odrive_can::AXIS::AXIS_0)
     {
         send_frame.can_id += odrive_can::AXIS::AXIS_0_ID;
-        socket_get_encoder_estimates_.writeFrame(send_frame);
-        can_frame recv_frame = socket_get_encoder_estimates_.readFrame();
-        RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
-
-        response->pos_estimate = odrive_can::can_getSignal<float>(recv_frame, 0, 32, true);
-        response->vel_estimate = odrive_can::can_getSignal<float>(recv_frame, 32, 32, true);
     }
     else if (request->axis == odrive_can::AXIS::AXIS_1)
     {
-        return;
+        send_frame.can_id += odrive_can::AXIS::AXIS_1_ID;
     }
     else
     {
         return;
     }
+    socket_get_encoder_estimates_.writeFrame(send_frame);
+    can_frame recv_frame = socket_get_encoder_estimates_.readFrame();
+    RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
+    response->pos_estimate = odrive_can::can_getSignal<float>(recv_frame, 0, 32, true);
+    response->vel_estimate = odrive_can::can_getSignal<float>(recv_frame, 32, 32, true);
 }
 void CanService::get_encoder_count_callback(const std::shared_ptr<ros2_odrive_can::srv::GetEncoderCount::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetEncoderCount::Response> response)
 {
@@ -377,22 +382,24 @@ void CanService::get_sensorless_estimates_callback(const std::shared_ptr<ros2_od
 }
 void CanService::reset_odrive_callback(const std::shared_ptr<ros2_odrive_can::srv::ResetOdrive::Request> request, std::shared_ptr<ros2_odrive_can::srv::ResetOdrive::Response> response)
 {
-    if (request->axis == odrive_can::AXIS::AXIS_0)
+    if (request->axis == odrive_can::AXIS::AXIS_0 || odrive_can::AXIS::AXIS_1)
     {
-        return;
-    }
-    else if (request->axis == odrive_can::AXIS::AXIS_1)
-    {
-        return;
+        can_frame send_frame;
+        send_frame.can_dlc = 0;
+        send_frame.can_id = odrive_can::AXIS::AXIS_0_ID;
+        send_frame.can_id += odrive_can::Msg::MSG_RESET_ODRIVE;
+        socket_get_vbus_voltage_.writeFrame(send_frame);
+        response->success = true;
     }
     else
     {
+        response->success = false;
         return;
     }
 }
 void CanService::get_vbus_voltage_callback(const std::shared_ptr<ros2_odrive_can::srv::GetVbusVoltage::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetVbusVoltage::Response> response)
 {
-    if (request->axis == odrive_can::AXIS::AXIS_0 || request->axis == odrive_can::AXIS::AXIS_1)
+    if (request->axis == odrive_can::AXIS::AXIS_0 || odrive_can::AXIS::AXIS_1)
     {
         can_frame send_frame;
         send_frame.can_dlc = 0;
@@ -411,16 +418,21 @@ void CanService::get_vbus_voltage_callback(const std::shared_ptr<ros2_odrive_can
 }
 void CanService::clear_errors_callback(const std::shared_ptr<ros2_odrive_can::srv::ClearErrors::Request> request, std::shared_ptr<ros2_odrive_can::srv::ClearErrors::Response> response)
 {
+    can_frame send_frame;
+    send_frame.can_dlc = 0;
+    send_frame.can_id = odrive_can::Msg::MSG_CLEAR_ERRORS;
     if (request->axis == odrive_can::AXIS::AXIS_0)
     {
-        return;
+        send_frame.can_id += odrive_can::AXIS::AXIS_0_ID;
     }
     else if (request->axis == odrive_can::AXIS::AXIS_1)
     {
-        return;
+        send_frame.can_id += odrive_can::AXIS::AXIS_1_ID;
     }
     else
     {
         return;
     }
+    socket_get_vbus_voltage_.writeFrame(send_frame);
+    response->success = true;
 }
