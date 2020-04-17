@@ -67,29 +67,15 @@ private:
     rclcpp::Service<ros2_odrive_can::srv::GetVbusVoltage>::SharedPtr service_get_vbus_voltage_;
     rclcpp::Service<ros2_odrive_can::srv::ClearErrors>::SharedPtr service_clear_errors_;
 
-    SocketcanInterface socket_odrive_estop_;
     SocketcanInterface socket_get_motor_error_;
     SocketcanInterface socket_get_encoder_error_;
     SocketcanInterface socket_get_sensorless_error_;
-    SocketcanInterface socket_set_axis_node_id_;
-    SocketcanInterface socket_set_axis_requested_state_;
-    SocketcanInterface socket_set_axis_startup_config_;
     SocketcanInterface socket_get_encoder_estimates_;
     SocketcanInterface socket_get_encoder_count_;
-    SocketcanInterface socket_set_controller_modes_;
-    SocketcanInterface socket_set_input_pos_;
-    SocketcanInterface socket_set_input_vel_;
-    SocketcanInterface socket_set_input_current_;
-    SocketcanInterface socket_set_vel_limit_;
-    SocketcanInterface socket_start_anticogging_;
-    SocketcanInterface socket_set_traj_vel_limit_;
-    SocketcanInterface socket_set_traj_accel_limits_;
-    SocketcanInterface socket_set_traj_a_per_css_;
     SocketcanInterface socket_get_iq_;
     SocketcanInterface socket_get_sensorless_estimates_;
-    SocketcanInterface socket_reset_odrive_;
     SocketcanInterface socket_get_vbus_voltage_;
-    SocketcanInterface socket_clear_errors_;
+    SocketcanInterface socket_generic_write_;
 
     void odrive_estop_callback(const std::shared_ptr<ros2_odrive_can::srv::OdriveEstop::Request> request, std::shared_ptr<ros2_odrive_can::srv::OdriveEstop::Response> response);
     void get_motor_error_callback(const std::shared_ptr<ros2_odrive_can::srv::GetMotorError::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetMotorError::Response> response);
@@ -114,5 +100,4 @@ private:
     void reset_odrive_callback(const std::shared_ptr<ros2_odrive_can::srv::ResetOdrive::Request> request, std::shared_ptr<ros2_odrive_can::srv::ResetOdrive::Response> response);
     void get_vbus_voltage_callback(const std::shared_ptr<ros2_odrive_can::srv::GetVbusVoltage::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetVbusVoltage::Response> response);
     void clear_errors_callback(const std::shared_ptr<ros2_odrive_can::srv::ClearErrors::Request> request, std::shared_ptr<ros2_odrive_can::srv::ClearErrors::Response> response);
-
 };

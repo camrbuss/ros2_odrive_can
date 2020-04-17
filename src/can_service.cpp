@@ -1,29 +1,15 @@
 #include "ros2_odrive_can/can_service.hpp"
 
 CanService::CanService(/* args */) : Node("can_service"),
-                                     socket_odrive_estop_(odrive_can::Msg::MSG_ODRIVE_ESTOP),
                                      socket_get_motor_error_(odrive_can::Msg::MSG_GET_MOTOR_ERROR),
                                      socket_get_encoder_error_(odrive_can::Msg::MSG_GET_ENCODER_ERROR),
                                      socket_get_sensorless_error_(odrive_can::Msg::MSG_GET_SENSORLESS_ERROR),
-                                     socket_set_axis_node_id_(odrive_can::Msg::MSG_SET_AXIS_NODE_ID),
-                                     socket_set_axis_requested_state_(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE),
-                                     socket_set_axis_startup_config_(odrive_can::Msg::MSG_SET_AXIS_STARTUP_CONFIG),
                                      socket_get_encoder_estimates_(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES),
                                      socket_get_encoder_count_(odrive_can::Msg::MSG_GET_ENCODER_COUNT),
-                                     socket_set_controller_modes_(odrive_can::Msg::MSG_SET_CONTROLLER_MODES),
-                                     socket_set_input_pos_(odrive_can::Msg::MSG_SET_INPUT_POS),
-                                     socket_set_input_vel_(odrive_can::Msg::MSG_SET_INPUT_VEL),
-                                     socket_set_input_current_(odrive_can::Msg::MSG_SET_INPUT_CURRENT),
-                                     socket_set_vel_limit_(odrive_can::Msg::MSG_SET_VEL_LIMIT),
-                                     socket_start_anticogging_(odrive_can::Msg::MSG_START_ANTICOGGING),
-                                     socket_set_traj_vel_limit_(odrive_can::Msg::MSG_SET_TRAJ_VEL_LIMIT),
-                                     socket_set_traj_accel_limits_(odrive_can::Msg::MSG_SET_TRAJ_ACCEL_LIMITS),
-                                     socket_set_traj_a_per_css_(odrive_can::Msg::MSG_SET_TRAJ_A_PER_CSS),
                                      socket_get_iq_(odrive_can::Msg::MSG_GET_IQ),
                                      socket_get_sensorless_estimates_(odrive_can::Msg::MSG_GET_SENSORLESS_ESTIMATES),
-                                     socket_reset_odrive_(odrive_can::Msg::MSG_RESET_ODRIVE),
                                      socket_get_vbus_voltage_(odrive_can::Msg::MSG_GET_VBUS_VOLTAGE),
-                                     socket_clear_errors_(odrive_can::Msg::MSG_CLEAR_ERRORS)
+                                     socket_generic_write_(0x00)
 {
     service_odrive_estop_ = this->create_service<ros2_odrive_can::srv::OdriveEstop>("odrive/odrive_estop", std::bind(&CanService::odrive_estop_callback, this, std::placeholders::_1, std::placeholders::_2));
     service_get_motor_error_ = this->create_service<ros2_odrive_can::srv::GetMotorError>("odrive/get_motor_error", std::bind(&CanService::get_motor_error_callback, this, std::placeholders::_1, std::placeholders::_2));
@@ -72,7 +58,7 @@ void CanService::odrive_estop_callback(const std::shared_ptr<ros2_odrive_can::sr
         response->success = false;
         return;
     }
-    socket_odrive_estop_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::get_motor_error_callback(const std::shared_ptr<ros2_odrive_can::srv::GetMotorError::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetMotorError::Response> response)
@@ -164,7 +150,7 @@ void CanService::set_axis_node_id_callback(const std::shared_ptr<ros2_odrive_can
         response->success = false;
         return;
     }
-    socket_set_axis_node_id_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_axis_requested_state_callback(const std::shared_ptr<ros2_odrive_can::srv::SetAxisRequestedState::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetAxisRequestedState::Response> response)
@@ -189,7 +175,7 @@ void CanService::set_axis_requested_state_callback(const std::shared_ptr<ros2_od
         response->success = false;
         return;
     }
-    socket_set_axis_requested_state_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_axis_startup_config_callback(const std::shared_ptr<ros2_odrive_can::srv::SetAxisStartupConfig::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetAxisStartupConfig::Response> response)
@@ -283,7 +269,7 @@ void CanService::set_controller_modes_callback(const std::shared_ptr<ros2_odrive
         response->success = false;
         return;
     }
-    socket_set_controller_modes_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_input_pos_callback(const std::shared_ptr<ros2_odrive_can::srv::SetInputPos::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetInputPos::Response> response)
@@ -312,7 +298,7 @@ void CanService::set_input_pos_callback(const std::shared_ptr<ros2_odrive_can::s
         response->success = false;
         return;
     }
-    socket_set_input_pos_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_input_vel_callback(const std::shared_ptr<ros2_odrive_can::srv::SetInputVel::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetInputVel::Response> response)
@@ -341,7 +327,7 @@ void CanService::set_input_vel_callback(const std::shared_ptr<ros2_odrive_can::s
         response->success = false;
         return;
     }
-    socket_set_input_vel_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_input_current_callback(const std::shared_ptr<ros2_odrive_can::srv::SetInputCurrent::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetInputCurrent::Response> response)
@@ -366,7 +352,7 @@ void CanService::set_input_current_callback(const std::shared_ptr<ros2_odrive_ca
         response->success = false;
         return;
     }
-    socket_set_input_current_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_vel_limit_callback(const std::shared_ptr<ros2_odrive_can::srv::SetVelLimit::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetVelLimit::Response> response)
@@ -394,7 +380,7 @@ void CanService::set_vel_limit_callback(const std::shared_ptr<ros2_odrive_can::s
         response->success = false;
         return;
     }
-    socket_set_vel_limit_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::start_anticogging_callback(const std::shared_ptr<ros2_odrive_can::srv::StartAnticogging::Request> request, std::shared_ptr<ros2_odrive_can::srv::StartAnticogging::Response> response)
@@ -416,7 +402,7 @@ void CanService::start_anticogging_callback(const std::shared_ptr<ros2_odrive_ca
         response->success = false;
         return;
     }
-    socket_start_anticogging_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_traj_vel_limit_callback(const std::shared_ptr<ros2_odrive_can::srv::SetTrajVelLimit::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetTrajVelLimit::Response> response)
@@ -444,7 +430,7 @@ void CanService::set_traj_vel_limit_callback(const std::shared_ptr<ros2_odrive_c
         response->success = false;
         return;
     }
-    socket_set_traj_vel_limit_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_traj_accel_limits_callback(const std::shared_ptr<ros2_odrive_can::srv::SetTrajAccelLimits::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetTrajAccelLimits::Response> response)
@@ -477,7 +463,7 @@ void CanService::set_traj_accel_limits_callback(const std::shared_ptr<ros2_odriv
         response->success = false;
         return;
     }
-    socket_set_traj_accel_limits_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::set_traj_a_per_css_callback(const std::shared_ptr<ros2_odrive_can::srv::SetTrajAPerCss::Request> request, std::shared_ptr<ros2_odrive_can::srv::SetTrajAPerCss::Response> response)
@@ -505,7 +491,7 @@ void CanService::set_traj_a_per_css_callback(const std::shared_ptr<ros2_odrive_c
         response->success = false;
         return;
     }
-    socket_set_traj_a_per_css_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
 void CanService::get_iq_callback(const std::shared_ptr<ros2_odrive_can::srv::GetIq::Request> request, std::shared_ptr<ros2_odrive_can::srv::GetIq::Response> response)
@@ -564,7 +550,7 @@ void CanService::reset_odrive_callback(const std::shared_ptr<ros2_odrive_can::sr
         send_frame.can_dlc = 0;
         send_frame.can_id = odrive_can::AXIS::AXIS_0_ID;
         send_frame.can_id += odrive_can::Msg::MSG_RESET_ODRIVE;
-        socket_reset_odrive_.writeFrame(send_frame);
+        socket_generic_write_.writeFrame(send_frame);
         response->success = true;
     }
     else
@@ -609,6 +595,6 @@ void CanService::clear_errors_callback(const std::shared_ptr<ros2_odrive_can::sr
     {
         return;
     }
-    socket_clear_errors_.writeFrame(send_frame);
+    socket_generic_write_.writeFrame(send_frame);
     response->success = true;
 }
