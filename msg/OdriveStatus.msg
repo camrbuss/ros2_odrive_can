@@ -1,2 +1,2 @@
-uint32 axis_error
-uint32 axis_state
+int32 axis_error
+int32 axis_state

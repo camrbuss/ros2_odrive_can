@@ -1,4 +1,4 @@
 uint8 axis
-int32 input_current
+int32 input_current # 0.01 Factor
 ---
 bool success
