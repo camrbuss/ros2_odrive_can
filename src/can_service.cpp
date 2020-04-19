@@ -80,7 +80,10 @@ void CanService::get_motor_error_callback(const std::shared_ptr<ros2_odrive_can:
         return;
     }
     socket_get_motor_error_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_motor_error_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_motor_error_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->motor_error = odrive_can::can_getSignal<int32_t>(recv_frame, 0, 32, true);
 }
@@ -103,7 +106,10 @@ void CanService::get_encoder_error_callback(const std::shared_ptr<ros2_odrive_ca
         return;
     }
     socket_get_encoder_error_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_encoder_error_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_encoder_error_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->encoder_error = odrive_can::can_getSignal<int32_t>(recv_frame, 0, 32, true);
 }
@@ -126,7 +132,10 @@ void CanService::get_sensorless_error_callback(const std::shared_ptr<ros2_odrive
         return;
     }
     socket_get_sensorless_error_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_sensorless_error_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_sensorless_error_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->sensorless_error = odrive_can::can_getSignal<int32_t>(recv_frame, 0, 32, true);
 }
@@ -214,7 +223,10 @@ void CanService::get_encoder_estimates_callback(const std::shared_ptr<ros2_odriv
         return;
     }
     socket_get_encoder_estimates_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_encoder_estimates_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_encoder_estimates_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->pos_estimate = odrive_can::can_getSignal<float>(recv_frame, 0, 32, true);
     response->vel_estimate = odrive_can::can_getSignal<float>(recv_frame, 32, 32, true);
@@ -238,7 +250,10 @@ void CanService::get_encoder_count_callback(const std::shared_ptr<ros2_odrive_ca
         return;
     }
     socket_get_encoder_count_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_encoder_count_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_encoder_count_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->shadow_count = odrive_can::can_getSignal<int32_t>(recv_frame, 0, 32, true);
     response->cpr_count = odrive_can::can_getSignal<int32_t>(recv_frame, 32, 32, true);
@@ -513,7 +528,10 @@ void CanService::get_iq_callback(const std::shared_ptr<ros2_odrive_can::srv::Get
         return;
     }
     socket_get_iq_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_iq_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_iq_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->iq_setpoint = odrive_can::can_getSignal<float>(recv_frame, 0, 32, true);
     response->iq_measured = odrive_can::can_getSignal<float>(recv_frame, 32, 32, true);
@@ -537,7 +555,10 @@ void CanService::get_sensorless_estimates_callback(const std::shared_ptr<ros2_od
         return;
     }
     socket_get_sensorless_estimates_.writeFrame(send_frame);
-    can_frame recv_frame = socket_get_sensorless_estimates_.readFrame();
+    can_frame recv_frame;
+    if (socket_get_sensorless_estimates_.readFrame(&recv_frame) < 0) {
+        RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+    }
     RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
     response->pos_estimate = odrive_can::can_getSignal<float>(recv_frame, 0, 32, true);
     response->vel_estimate = odrive_can::can_getSignal<float>(recv_frame, 32, 32, true);
@@ -569,7 +590,10 @@ void CanService::get_vbus_voltage_callback(const std::shared_ptr<ros2_odrive_can
         send_frame.can_id += odrive_can::AXIS::AXIS_0_ID;
         send_frame.can_id += odrive_can::Msg::MSG_GET_VBUS_VOLTAGE;
         socket_get_vbus_voltage_.writeFrame(send_frame);
-        can_frame recv_frame = socket_get_vbus_voltage_.readFrame();
+        can_frame recv_frame;
+        if (socket_get_vbus_voltage_.readFrame(&recv_frame) < 0) {
+            RCLCPP_INFO(this->get_logger(), "No ODrive Response Received");
+        }
         RCLCPP_DEBUG(this->get_logger(), "%x %x %x %x %x %x %x %x", recv_frame.data[0], recv_frame.data[1], recv_frame.data[2], recv_frame.data[3], recv_frame.data[4], recv_frame.data[5], recv_frame.data[6], recv_frame.data[7]);
         response->vbus_voltage = odrive_can::can_getSignal<float>(recv_frame, 0, 32, true);
     }

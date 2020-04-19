@@ -6,7 +6,7 @@
 #include "ros2_odrive_can/socketcan_interface.hpp"
 #include "ros2_odrive_can/odrive_can.hpp"
 
-#include "ros2_odrive_can/msg/odrive_status.hpp"
+// #include "ros2_odrive_can/msg/odrive_status.hpp"
 
 #include "ros2_odrive_can/srv/odrive_estop.hpp"
 #include "ros2_odrive_can/srv/get_motor_error.hpp"
@@ -39,10 +39,6 @@ public:
     ~CanService();
 
 private:
-    // rclcpp::Service<ros2_odrive_can::srv::EncoderEstimates>::SharedPtr service_;
-    // SocketcanInterface socketcan_interface_(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_0_ID);
-    // void callback(const std::shared_ptr<ros2_odrive_can::srv::EncoderEstimates::Request> request, std::shared_ptr<ros2_odrive_can::srv::EncoderEstimates::Response> response);
-
     rclcpp::Service<ros2_odrive_can::srv::OdriveEstop>::SharedPtr service_odrive_estop_;
     rclcpp::Service<ros2_odrive_can::srv::GetMotorError>::SharedPtr service_get_motor_error_;
     rclcpp::Service<ros2_odrive_can::srv::GetEncoderError>::SharedPtr service_get_encoder_error_;

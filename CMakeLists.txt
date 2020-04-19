@@ -60,6 +60,7 @@ include_directories(
 )
 add_library(${PROJECT_NAME}_interface
   src/can_service.cpp
+  src/can_publisher.cpp
   src/socketcan_interface.cpp
 )
 ament_target_dependencies(${PROJECT_NAME}_interface
