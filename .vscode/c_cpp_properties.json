@@ -6,15 +6,15 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
-                "~/ws_ros2/src/ros2_odrive_can/include/**",
+                "./include/**",
                 "/usr/include/**",
-                "/opt/ros/eloquent/include/**"
+                "/opt/ros/foxy/include/**",
+                "../../install/ros2_odrive_can/include/**"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
             "compilerPath": "/usr/bin/clang",
-            "cStandard": "c11",
-            "cppStandard": "c++17"
+            "cStandard": "c11"
         }
     ],
     "version": 4

@@ -4,7 +4,7 @@ CanPublisher::CanPublisher() : Node("can_publisher"),
                                socket_axis0_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_0_ID, 0x7FF, 500),
                                socket_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID, 0x7FF, 110000)
 {
-    auto qos = rclcpp::QoS(rclcpp::QoSInitialization(qos_profile.history, qos_profile.depth), qos_profile);
+    // auto qos = rclcpp::QoS(rclcpp::QoSInitialization(qos_profile.history, qos_profile.depth), qos_profile);
     publisher_ = this->create_publisher<ros2_odrive_can::msg::OdriveStatus>("/odrive/odrive_status", 5);
     timer_ = this->create_wall_timer(std::chrono::milliseconds(100), std::bind(&CanPublisher::timerCallback, this));
 }
