@@ -1,4 +1,5 @@
 uint8 axis
 ---
+uint8 axis_response
 float32 pos_estimate
 float32 vel_estimate

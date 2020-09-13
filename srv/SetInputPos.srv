@@ -1,5 +1,5 @@
 uint8 axis
-int32 input_position
+float32 input_position
 int16 vel_ff # 0.1 Factor
 int16 current_ff # 0.01 Factor
 ---

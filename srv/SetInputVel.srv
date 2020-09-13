@@ -1,5 +1,5 @@
 uint8 axis
-int32 input_vel # 0.01 Factor
+float32 input_vel # 0.01 Factor
 int32 current_ff # 0.01 Factor
 ---
 bool success

@@ -213,10 +213,12 @@ void CanService::get_encoder_estimates_callback(const std::shared_ptr<ros2_odriv
     if (request->axis == odrive_can::AXIS::AXIS_0)
     {
         send_frame.can_id += odrive_can::AXIS::AXIS_0_ID;
+        response->axis_response = odrive_can::AXIS::AXIS_0;
     }
     else if (request->axis == odrive_can::AXIS::AXIS_1)
     {
         send_frame.can_id += odrive_can::AXIS::AXIS_1_ID;
+        response->axis_response = odrive_can::AXIS::AXIS_1;
     }
     else
     {
@@ -291,10 +293,12 @@ void CanService::set_input_pos_callback(const std::shared_ptr<ros2_odrive_can::s
 {
     can_frame send_frame;
     send_frame.can_dlc = 8;
-    send_frame.data[0] = request->input_position;
-    send_frame.data[1] = request->input_position >> 8;
-    send_frame.data[2] = request->input_position >> 16;
-    send_frame.data[3] = request->input_position >> 24;
+    uint32_t float_bytes;
+    std::memcpy(&float_bytes, &request->input_position, sizeof float_bytes);
+    send_frame.data[0] = float_bytes;
+    send_frame.data[1] = float_bytes >> 8;
+    send_frame.data[2] = float_bytes >> 16;
+    send_frame.data[3] = float_bytes >> 24;
     send_frame.data[4] = request->vel_ff;
     send_frame.data[5] = request->vel_ff >> 8;
     send_frame.data[6] = request->current_ff;
@@ -320,14 +324,17 @@ void CanService::set_input_vel_callback(const std::shared_ptr<ros2_odrive_can::s
 {
     can_frame send_frame;
     send_frame.can_dlc = 8;
-    send_frame.data[0] = request->input_vel;
-    send_frame.data[1] = request->input_vel >> 8;
-    send_frame.data[2] = request->input_vel >> 16;
-    send_frame.data[3] = request->input_vel >> 24;
-    send_frame.data[4] = request->current_ff;
-    send_frame.data[5] = request->current_ff >> 8;
-    send_frame.data[6] = request->current_ff >> 16;
-    send_frame.data[7] = request->current_ff >> 24;
+    uint32_t float_bytes;
+    std::memcpy(&float_bytes, &request->input_vel, sizeof float_bytes);
+    send_frame.data[0] = float_bytes;
+    send_frame.data[1] = float_bytes >> 8;
+    send_frame.data[2] = float_bytes >> 16;
+    send_frame.data[3] = float_bytes >> 24;
+    std::memcpy(&float_bytes, &request->current_ff, sizeof float_bytes);
+    send_frame.data[4] = float_bytes;
+    send_frame.data[5] = float_bytes >> 8;
+    send_frame.data[6] = float_bytes >> 16;
+    send_frame.data[7] = float_bytes >> 24;
     send_frame.can_id = odrive_can::Msg::MSG_SET_INPUT_VEL;
     if (request->axis == odrive_can::AXIS::AXIS_0)
     {
@@ -349,10 +356,13 @@ void CanService::set_input_current_callback(const std::shared_ptr<ros2_odrive_ca
 {
     can_frame send_frame;
     send_frame.can_dlc = 4;
-    send_frame.data[0] = request->input_current;
-    send_frame.data[1] = request->input_current >> 8;
-    send_frame.data[2] = request->input_current >> 16;
-    send_frame.data[3] = request->input_current >> 24;
+    // Change to float
+    uint32_t float_bytes;
+    std::memcpy(&float_bytes, &request->input_current, sizeof float_bytes);
+    send_frame.data[0] = float_bytes;
+    send_frame.data[1] = float_bytes >> 8;
+    send_frame.data[2] = float_bytes >> 16;
+    send_frame.data[3] = float_bytes >> 24;
     send_frame.can_id = odrive_can::Msg::MSG_SET_INPUT_CURRENT;
     if (request->axis == odrive_can::AXIS::AXIS_0)
     {
